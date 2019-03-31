@@ -96,7 +96,7 @@ void push_inceput(struct nod_Stiva **cap, struct Carte c){
 }
 
 int pop_inceput(struct Carte *val_extrasa, struct nod_Stiva **cap){
-    if(cap == NULL){
+    if(*cap == NULL){
         return -1;
         //stiva este goala
     }
@@ -116,6 +116,14 @@ int pop_inceput(struct Carte *val_extrasa, struct nod_Stiva **cap){
         free(aux);
 
         return 0;
+    }
+}
+
+void conversie_catre_vector(struct nod_Stiva **cap, struct Carte **carti, int *nr_elemente){
+    if((*cap) != NULL) {
+        while (pop_inceput(&(*carti)[(*nr_elemente)], &(*cap)) == 0) {
+            (*nr_elemente)++;
+        }
     }
 }
 
@@ -159,6 +167,7 @@ int main() {
     printf("   <-- Elementul extras\n");
 
     traversare(stack);
+    dezalocare(&stack);
 
     //--------------------------------------------
 
@@ -182,7 +191,25 @@ int main() {
 
     traversare(stiva);
 
-    dezalocare(&stiva);
-    dezalocare(&stack);
+
+
+    //--------------------------------------------
+
+    printf("\n\n-------CONVERSIE CATRE VECTOR----------");
+    struct Carte *vect = (struct Carte*)malloc(sizeof(struct Carte) * 3);
+    int nr = 0, i;
+
+    printf("\nSe extrage din stiva: ");
+    conversie_catre_vector(&stiva, &vect, &nr);
+
+    printf("\n\n\tVectorul de carti:");
+    for(i = 0; i < nr; i++){
+        printf("\nDenumire: %s, Cod: %d, Pret: %5.2f", vect[i].denumire, vect[i].cod, vect[i].pret);
+    }
+
+    if(stiva == NULL)
+        printf("\nStiva este acum NULL");
+
+
     return 0;
 }
